@@ -7,9 +7,10 @@ import {
     XAxis,
     YAxis,
     ReferenceArea,
-    ReferenceLine
+    ReferenceLine,
+    Tooltip
 } from 'recharts';
-import {Card, CardBody, HeadingText, NrqlQuery, NrqlQueries, Spinner, AutoSizer} from 'nr1';
+import { Card, CardBody, HeadingText, NrqlQuery, NrqlQueries, Spinner, AutoSizer } from 'nr1';
 
 export default class LineGraphWithDeploymentsVisualization extends React.Component {
     // Custom props you wish to be configurable in the UI must also be defined in
@@ -38,26 +39,26 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
         ),
     };
 
-    
-     transformData = (rawData) => {
-         let list = [];
-         rawData[0].data.forEach(item => {
-                    list.push({x:new Date(item.x),y:item.y});
-                });
-         
-         return list;
+
+    transformData = (rawData) => {
+        let list = [];
+        rawData[0].data.forEach(item => {
+            list.push({ x: new Date(item.x), y: item.y });
+        });
+
+        return list;
     };
 
     /**
      * Format the given axis tick's numeric value into a string for display.
      */
     formatTick = (value) => {
-        return value.toLocaleString();
+        return value.toLocaleDateString();
     };
 
     render() {
-        const {nrqlQueries, stroke, fill} = this.props;
-
+        const { nrqlQueries, stroke, fill } = this.props;
+        let events;
         const nrqlQueryPropsAvailable =
             nrqlQueries &&
             nrqlQueries[0] &&
@@ -65,55 +66,69 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
             nrqlQueries[0].query;
 
         if (!nrqlQueryPropsAvailable) {
-            return <EmptyState />;
+
         }
 
         return (
+
             <AutoSizer>
-                {({width, height}) => (
+                {({ width, height }) => (
+
                     <NrqlQuery
                         query={nrqlQueries[0].query}
                         accountId={parseInt(nrqlQueries[0].accountId)}
                         pollInterval={NrqlQuery.AUTO_POLL_INTERVAL}
                     >
-                        {({data, loading, error}) => {
+                        {({ data, loading, error }) => {
+
                             console.log('data:');
                             console.log(data);
-                            
-                            var transformedData=[];
-                            if(data != null){
+
+                            var transformedData = [];
+                            if (data != null) {
                                 transformedData = this.transformData(data);
                             }
-                            
+
                             return (
-                                <LineChart
-                                width={width}
-                                height={height}
-                                data={transformedData}
-                                margin={{
-                                  top: 5,
-                                  right: 30,
-                                  left: 20,
-                                  bottom: 5,
-                                }}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="x" scale="time" />
-                                <YAxis scale="linear"/>
-                                {
-                                    <NrqlQuery
+                                <NrqlQuery
                                     query={nrqlQueries[0].query2}
                                     accountId={parseInt(nrqlQueries[0].accountId)}
                                     pollInterval={NrqlQuery.AUTO_POLL_INTERVAL}
                                 >
-                                    {({data2, loading2, error2}) => {
-                                    console.log('data2');
-                                        
+                                    {({ data, loading, error }) => {
+                                        if (data != null) {
+                                            
+                                            let lines = [];
+                                            data != null ? data[0]?.data?.forEach(item => {
+                                                lines.push(<ReferenceLine x={item.x} stroke="grey" strokeWidth="1" label={{ position: 'left', angle:90, value: item.name, fill: 'grey', fontSize: 10 }}/>);
+                                            }) : ''
+
+                                            return (
+                                                <LineChart
+                                                    width={width}
+                                                    height={height}
+                                                    data={transformedData}
+                                                    margin={{
+                                                        top: 5,
+                                                        right: 30,
+                                                        left: 20,
+                                                        bottom: 5,
+                                                    }}>
+                                                    <CartesianGrid strokeDasharray="3 3" />
+                                                    <XAxis dataKey="x" scale="time" label="x" tickFormatter={this.formatTick}/>
+                                                    <YAxis dataKey="y" scale="linear" />
+                                                    <Tooltip/>
+                                                    {lines}
+                                                    <Line type="monotone" dataKey="y" stroke="green" />
+
+                                                </LineChart>)
+                                        } else {
+                                            return <EmptyState />;
+                                        }
+
                                     }}
-                                    </NrqlQuery>
-                                }
-                                <Line type="monotone" dataKey="y" stroke="#8884d8" />
-                              </LineChart>
-                            );
+                                </NrqlQuery>)
+
                         }}
                     </NrqlQuery>
                 )}
