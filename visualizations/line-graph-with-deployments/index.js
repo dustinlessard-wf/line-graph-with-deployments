@@ -11,7 +11,7 @@ import {
     Tooltip
 } from 'recharts';
 import { Card, CardBody, HeadingText, NrqlQuery, NrqlQueries, Spinner, AutoSizer } from 'nr1';
-
+import { DateTime } from 'luxon';
 export default class LineGraphWithDeploymentsVisualization extends React.Component {
     // Custom props you wish to be configurable in the UI must also be defined in
     // the nr1.json file for the visualization. See docs for more details.
@@ -43,7 +43,7 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
     transformData = (rawData) => {
         let list = [];
         rawData[0].data.forEach(item => {
-            list.push({ x: new Date(item.x), y: item.y });
+            list.push({ x: item.x, y: item.y });
         });
 
         return list;
@@ -53,7 +53,9 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
      * Format the given axis tick's numeric value into a string for display.
      */
     formatTick = (value) => {
-        return value.toLocaleDateString();
+        console.log(value);
+        //return value;
+        return DateTime.fromMillis(value).toFormat("yyyy LLL dd HH:mm:ss");
     };
 
     render() {
@@ -66,7 +68,7 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
             nrqlQueries[0].query;
 
         if (!nrqlQueryPropsAvailable) {
-
+            return <EmptyState />;
         }
 
         return (
@@ -114,13 +116,12 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
                                                         left: 20,
                                                         bottom: 5,
                                                     }}>
-                                                    <CartesianGrid strokeDasharray="3 3" />
-                                                    <XAxis dataKey="x" scale="time" label="x" tickFormatter={this.formatTick}/>
+                                                    <CartesianGrid strokeDasharray="2 2" />
+                                                    <XAxis dataKey="x" scale="time" tick={{ fill: 'grey', fontSize: 8 }} tickFormatter={this.formatTick}/>
                                                     <YAxis dataKey="y" scale="linear" />
                                                     <Tooltip/>
                                                     {lines}
-                                                    <Line type="monotone" dataKey="y" stroke="green" />
-
+                                                    <Line type="linear" dataKey="y" stroke="green" strokeWidth={4}/>
                                                 </LineChart>)
                                         } else {
                                             return <EmptyState />;
