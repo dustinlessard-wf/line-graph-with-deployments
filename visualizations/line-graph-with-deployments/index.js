@@ -59,12 +59,12 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
     };
 
     render() {
-        const { nrqlQueries, stroke, fill } = this.props;
+        const { accountId, nrqlQueries, nrqlEventQueries } = this.props;
         let events;
         const nrqlQueryPropsAvailable =
             nrqlQueries &&
             nrqlQueries[0] &&
-            nrqlQueries[0].accountId &&
+            accountId &&
             nrqlQueries[0].query;
 
         if (!nrqlQueryPropsAvailable) {
@@ -78,13 +78,14 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
 
                     <NrqlQuery
                         query={nrqlQueries[0].query}
-                        accountId={parseInt(nrqlQueries[0].accountId)}
+                        accountId={parseInt(accountId)}
                         pollInterval={NrqlQuery.AUTO_POLL_INTERVAL}
                     >
                         {({ data, loading, error }) => {
 
                             console.log('data:');
                             console.log(data);
+                            console.log(nrqlEventQueries);
 
                             var transformedData = [];
                             if (data != null) {
@@ -93,11 +94,13 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
 
                             return (
                                 <NrqlQuery
-                                    query={nrqlQueries[0].query2}
-                                    accountId={parseInt(nrqlQueries[0].accountId)}
+                                    query={nrqlEventQueries[0].eventQuery}
+                                    accountId={parseInt(accountId)}
                                     pollInterval={NrqlQuery.AUTO_POLL_INTERVAL}
                                 >
                                     {({ data, loading, error }) => {
+                                        console.log('event data:');
+                                        console.log(data);
                                         if (data != null) {
                                             
                                             let lines = [];
@@ -121,7 +124,7 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
                                                     <YAxis dataKey="y" scale="linear" />
                                                     <Tooltip/>
                                                     {lines}
-                                                    <Line type="linear" dataKey="y" stroke="green" strokeWidth={4}/>
+                                                    <Line type="linear" dataKey="y" stroke="green"  strokeWidth={4}/>
                                                 </LineChart>)
                                         } else {
                                             return <EmptyState />;
@@ -154,7 +157,10 @@ const EmptyState = () => (
                 An example NRQL query you can try is:
             </HeadingText>
             <code>
-                FROM NrUsage SELECT sum(usage) FACET metric SINCE 1 week ago
+            SELECT percentage(count(*), WHERE result = 'SUCCESS') FROM SyntheticCheck WHERE custom.Solution IN ('Home') AND custom.Domain ='app.wdesk.com' FACET custom.Solution LIMIT MAX SINCE 1 week ago
+            </code>
+            <code>
+            SELECT timestamp, deployment.release.name, deployment.service FROM SoftwareDevelopmentLifecycle WHERE event = 'deploy_complete' AND deployment.environment = 'prod' LIMIT MAX SINCE 1 week ago
             </code>
         </CardBody>
     </Card>
