@@ -1,6 +1,6 @@
 {
     "schemaType": "NERDPACK",
     "id": "1f98fddc-c5ea-4374-bad6-21d44b9e0ac5",
-    "displayName": "LineGraphWithDeployments",
-    "description": "Nerdpack line-graph-with-deployments"
+    "displayName": "TimeseriesWithEvents",
+    "description": "Nerdpack timeseries-with-events"
 }

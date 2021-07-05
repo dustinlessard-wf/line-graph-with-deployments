@@ -157,7 +157,7 @@ const EmptyState = () => (
                 An example NRQL query you can try is:
             </HeadingText>
             <code>
-            SELECT percentage(count(*), WHERE result = 'SUCCESS') FROM SyntheticCheck WHERE custom.Solution IN ('Home') AND custom.Domain ='app.wdesk.com' FACET custom.Solution LIMIT MAX SINCE 1 week ago
+            SELECT percentage(count(*), WHERE result = 'SUCCESS')*100 FROM SyntheticCheck WHERE timestamp > 1588890600000 AND custom.Solution IN ('Financial Reporting', 'Home', 'Integrated Risk', 'Operational Reporting', 'XBRL Financial Reporting') AND custom.Domain ='app.wdesk.com' AND error != 'TypeError: Cannot read property \'toString\' of undefined' FACET custom.Solution LIMIT MAX SINCE 1 week ago TIMESERIES 
             </code>
             <code>
             SELECT timestamp, deployment.release.name, deployment.service FROM SoftwareDevelopmentLifecycle WHERE event = 'deploy_complete' AND deployment.environment = 'prod' LIMIT MAX SINCE 1 week ago
