@@ -120,12 +120,13 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
 
                                             let lines = [];
                                             let trendData = [];
+                                            var trendLine;
 
                                             if (showEvents == true) {
                                                 console.log('showEvents is true');
                                                 data != null ? data[0]?.data?.forEach(item => {
-                                                    console.log('adding new event');
-                                                    console.log(item.x);
+                                                    // console.log('adding new event');
+                                                    // console.log(item.x);
                                                     lines.push(<ReferenceLine x={item.x} stroke={eventColor || "grey"} strokeWidth="1" label={{ position: 'left', angle: 90, value: item.name, fill: eventColor || 'grey', fontSize: 10 }} />);
 
                                                 }) : ''
@@ -140,6 +141,7 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
                                                 xValues.forEach((xValue) => {
                                                     trendData.push({ y: trend.calcY(xValue), x: xValue })
                                                 });
+                                                trendLine = <Line data={trendData} type="linear" dataKey="y" stroke="red" dot={false} />;
                                             }
 
                                             return (
@@ -152,11 +154,10 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
                                                         left: 20,
                                                         bottom: 5,
                                                     }}>
-                                                    <XAxis dataKey="x" type="number" tick={{ fill: 'grey', fontSize: 8 }} tickFormatter={this.formatTick} domain={[xMin, xMax]} />
+                                                    <XAxis dataKey="x" type="number" tickCount="10" tick={{ fill: 'grey', fontSize: 8 }} tickFormatter={this.formatTick} domain={['auto', 'auto']} />
                                                     <YAxis dataKey="y" domain={[yMin, yMax]} />
-                                                    <Tooltip />
                                                     <Line data={transformedData} type="linear" dataKey="y" stroke={timeseriesColor || "green"} strokeWidth={2} dot={false} />
-                                                    <Line data={trendData} type="linear" dataKey="y" stroke="red" dot={false} />
+                                                    {trendLine}
                                                     {lines}
                                                 </LineChart>)
                                         }
