@@ -1,0 +1,50 @@
+{
+    "schemaType": "VISUALIZATION",
+    "id": "timeseries-with-events",
+    "displayName": "TimeseriesWithEvents",
+    "description": "Coming soon",
+    "configuration": [
+        {
+            "name": "accountId",
+            "title": "Account ID",
+            "description": "Account ID to be associated with the query",
+            "type": "account-id"
+        },
+        {
+            "name": "timeseriesQuery",
+            "title": "Timeseries Query",
+            "description": "NRQL query for visualization",
+            "type": "nrql"
+        },
+        {
+            "name": "timeseriesColor",
+            "title": "Timeseries Color",
+            "description": "color for timeseries line",
+            "type": "string"
+        },
+        {
+            "name": "eventQuery",
+            "title": "Event Query",
+            "description": "NRQL event query for visualization",
+            "type": "nrql"
+        },
+        {
+            "name": "eventColor",
+            "title": "Events Color",
+            "description": "color for events",
+            "type": "string"
+        },
+        {
+            "name": "showEvents",
+            "title": "Show Events",
+            "description": "Show results from events query",
+            "type": "boolean"
+        },
+        {
+            "name": "showTrendLine",
+            "title": "Show Trend Line",
+            "description": "show linear regression line",
+            "type": "boolean"
+        }
+    ]
+}
