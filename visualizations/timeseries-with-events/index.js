@@ -4,6 +4,7 @@ import {
     Line,
     LineChart,
     CartesianGrid,
+    Legend,
     XAxis,
     YAxis,
     ReferenceArea,
@@ -48,6 +49,23 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
         return list;
     };
 
+    getBasicPoints = (listOfData) => {
+        let list = [];
+        listOfData.forEach(item => {
+            list.push({ x: item.x, y: item.y });
+        });
+        return list;
+    }
+
+    getTimeSeriesLines = (rawData) => {
+        let list = [];
+        rawData.forEach(item => {
+            console.log(item.metadata.color);
+            list.push(<Line name={item.metadata.name} data={this.getBasicPoints(item.data)} type="linear" dataKey="y" stroke={item.metadata.color} strokeWidth={2} dot={false} />);
+        })
+        return list;
+    }
+
     /**
      * Format the given axis tick's numeric value into a string for display.
      */
@@ -81,8 +99,13 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
                         {({ data, loading, error }) => {
 
                             var transformedData = [];
+                            var timeSerieslines;
                             if (data != null) {
+                                timeSerieslines = this.getTimeSeriesLines(data);
                                 transformedData = this.transformData(data);
+                                
+                                console.log('timeSerieslines');
+                                console.log(timeSerieslines);
                             }
 
                             return (
@@ -127,7 +150,7 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
                                                 data != null ? data[0]?.data?.forEach(item => {
                                                     // console.log('adding new event');
                                                     // console.log(item.x);
-                                                    lines.push(<ReferenceLine x={item.x} stroke={eventColor || "grey"} strokeWidth="1" label={{ position: 'left', angle: 90, value: item.name, fill: eventColor || 'grey', fontSize: 10 }} />);
+                                                    lines.push(<ReferenceLine fillOpacity="0.1" x={item.x} stroke={eventColor || "grey"} strokeWidth="1" label={{ position: 'left', angle: 90, value: item.name, fill: eventColor || 'grey', fontSize: 10 }} />);
 
                                                 }) : ''
                                             }
@@ -141,7 +164,7 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
                                                 xValues.forEach((xValue) => {
                                                     trendData.push({ y: trend.calcY(xValue), x: xValue })
                                                 });
-                                                trendLine = <Line data={trendData} type="linear" dataKey="y" stroke="red" dot={false} />;
+                                                trendLine = <Line name="trend" data={trendData} type="linear" dataKey="y" stroke="red" dot={false} />;
                                             }
 
                                             return (
@@ -154,10 +177,11 @@ export default class LineGraphWithDeploymentsVisualization extends React.Compone
                                                         left: 20,
                                                         bottom: 5,
                                                     }}>
+                                                    <Legend verticalAlign="top" height={36}/>
                                                     <XAxis dataKey="x" type="number" tickCount="10" tick={{ fill: 'grey', fontSize: 8 }} tickFormatter={this.formatTick} domain={['auto', 'auto']} />
                                                     <YAxis dataKey="y" domain={[yMin, yMax]} />
-                                                    <Line data={transformedData} type="linear" dataKey="y" stroke={timeseriesColor || "green"} strokeWidth={2} dot={false} />
                                                     {trendLine}
+                                                    {timeSerieslines}
                                                     {lines}
                                                 </LineChart>)
                                         }
@@ -187,8 +211,9 @@ const EmptyState = () => (
                 An example NRQL query you can try is:
             </HeadingText>
             <code>
-                SELECT percentage(count(*), WHERE result = 'SUCCESS') *100 FROM SyntheticCheck WHERE custom.Solution IN ('Financial Reporting', 'Home', 'Integrated Risk', 'Operational Reporting', 'XBRL Financial Reporting') AND custom.Domain ='app.wdesk.com' AND error != 'TypeError: Cannot read property \'toString\' of undefined' TIMESERIES LIMIT MAX SINCE 1 week ago
+                SELECT percentage(count(*), WHERE result = 'SUCCESS') *100 FROM SyntheticCheck WHERE custom.Solution IN ('Financial Reporting', 'Home', 'Integrated Risk', 'Operational Reporting', 'XBRL Financial Reporting') AND custom.Domain ='app.wdesk.com' FACET custom.Solution TIMESERIES LIMIT MAX SINCE 1 week ago
             </code>
+            <br/><br/>
             <code>
                 SELECT timestamp, deployment.release.name as 'name', deployment.service FROM SoftwareDevelopmentLifecycle WHERE event = 'deploy_complete' AND deployment.environment = 'prod' LIMIT MAX SINCE 1 week ago
             </code>
