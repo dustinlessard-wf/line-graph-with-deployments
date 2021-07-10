@@ -24,8 +24,8 @@
         },
         {
             "name": "eventQuery",
-            "title": "Event Query",
-            "description": "NRQL event query for visualization",
+            "title": "Events as vertical lines Query",
+            "description": "NRQL event query for visualizing events as vertical lines",
             "type": "nrql"
         },
         {
@@ -41,10 +41,22 @@
             "type": "boolean"
         },
         {
+            "name": "areasQuery",
+            "title": "Events as areas Query",
+            "description": "NRQL event query for visualizing events as areas",
+            "type": "nrql"
+        },
+        {
             "name": "showTrendLine",
             "title": "Show Trend Line",
             "description": "show linear regression line",
             "type": "boolean"
+        },
+        {
+            "name": "numberOfTicks",
+            "title": "Number of ticks on X axis",
+            "description": "",
+            "type": "string"
         }
     ]
 }
