@@ -2,61 +2,119 @@
     "schemaType": "VISUALIZATION",
     "id": "timeseries-with-events",
     "displayName": "TimeseriesWithEvents",
-    "description": "Coming soon",
+    "description": "Alpha - use at your own risk.  There will be breaking changes",
     "configuration": [
         {
-            "name": "accountId",
-            "title": "Account ID",
-            "description": "Account ID to be associated with the query",
-            "type": "account-id"
+            "name": "settings",
+            "title": "Settings",
+            "type": "namespace",
+            "items": [
+                {
+                    "name": "accountId",
+                    "title": "Account ID",
+                    "description": "Account ID to be associated with the query",
+                    "type": "account-id"
+                },
+                {
+                    "name": "numberOfTicks",
+                    "title": "Number of ticks on X axis",
+                    "description": "",
+                    "type": "string"
+                }
+            ]
         },
         {
-            "name": "timeseriesQuery",
-            "title": "Timeseries Query",
-            "description": "NRQL query for visualization",
-            "type": "nrql"
+            "name": "timeseriesQueries",
+            "title": "Timeseries Queries",
+            "type": "collection",
+            "items": [
+                {
+                    "name": "tsquery",
+                    "title": "Query",
+                    "description": "NRQL query for visualization",
+                    "type": "nrql"
+                },
+                {
+                    "name": "colors",
+                    "title": "Colors",
+                    "description": "color for timeseries",
+                    "type": "string"
+                },
+                {
+                    "name": "tsThickness",
+                    "title": "Thicknesses for timeseries",
+                    "description": "comma separated list",
+                    "type": "string"
+                },
+                {
+                    "name": "showTrendLine",
+                    "title": "Show Trend Line",
+                    "description": "show linear regression trend line",
+                    "type": "boolean"
+                }
+            ]
         },
         {
-            "name": "timeseriesColor",
-            "title": "Timeseries Color",
-            "description": "color for timeseries line",
-            "type": "string"
+            "name": "eventsAsLinesQueries",
+            "title": "Events As Lines Queries",
+            "type": "collection",
+            "items": [
+                {
+                    "name": "ealquery",
+                    "title": "Query",
+                    "description": "NRQL query for visualization",
+                    "type": "nrql"
+                },
+                {
+                    "name": "ealcolor",
+                    "title": "Color",
+                    "description": "color for timeseries",
+                    "type": "string"
+                },
+                {
+                    "name": "ealHideLabels",
+                    "title": "Hide Labels",
+                    "description": "Hide labels?",
+                    "type": "boolean"
+                },
+                {
+                    "name": "ealHideResults",
+                    "title": "Hide Results",
+                    "description": "Hide results from query",
+                    "type": "boolean"
+                }
+            ]
         },
         {
-            "name": "eventQuery",
-            "title": "Events as vertical lines Query",
-            "description": "NRQL event query for visualizing events as vertical lines",
-            "type": "nrql"
-        },
-        {
-            "name": "eventColor",
-            "title": "Events Color",
-            "description": "color for events",
-            "type": "string"
-        },
-        {
-            "name": "showEvents",
-            "title": "Show Events",
-            "description": "Show results from events query",
-            "type": "boolean"
-        },
-        {
-            "name": "areasQuery",
-            "title": "Events as areas Query",
-            "description": "NRQL event query for visualizing events as areas",
-            "type": "nrql"
-        },
-        {
-            "name": "showTrendLine",
-            "title": "Show Trend Line",
-            "description": "show linear regression line",
-            "type": "boolean"
-        },
-        {
-            "name": "numberOfTicks",
-            "title": "Number of ticks on X axis",
-            "description": "",
-            "type": "string"
+            "name": "eventsAsAreasQueries",
+            "title": "Events As Areas Queries",
+            "type": "collection",
+            "items": [
+                {
+                    "name": "eaaquery",
+                    "title": "Query",
+                    "description": "NRQL query for visualization",
+                    "type": "nrql"
+                },
+                {
+                    "name": "eaacolor",
+                    "title": "Color",
+                    "description": "color for event areas",
+                    "type": "string"
+                },
+                {
+                    "name": "eaaHideLabels",
+                    "title": "Hide Labels",
+                    "description": "Hide labels?",
+                    "type": "boolean"
+                },
+                {
+                    "name": "eaaHideResults",
+                    "title": "Hide Results",
+                    "description": "Hide results from query",
+                    "type": "boolean"
+                }
+            ]
         }
     ]
 }
