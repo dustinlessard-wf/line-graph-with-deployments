@@ -1,0 +1,92 @@
+{
+    "schemaType": "VISUALIZATION",
+    "id": "better-billboard",
+    "displayName": "BetterBillboard",
+    "description": "",
+    "configuration": [
+        {
+            "name": "settings",
+            "title": "Settings",
+            "type": "namespace",
+            "items": [
+                {
+                    "name": "accountId",
+                    "title": "Account ID",
+                    "description": "Account ID to be associated with the query",
+                    "type": "account-id"
+                },
+                {
+                    "name": "query",
+                    "title": "Query",
+                    "description": "NRQL query for visualization",
+                    "type": "nrql"
+                },
+                {
+                    "name": "label",
+                    "title": "Label",
+                    "description": "Label to use",
+                    "type": "string"
+                },
+                {
+                    "name": "unit",
+                    "title": "Unit",
+                    "description": "Unit to use",
+                    "type": "string"
+                },
+                {
+                    "name": "precision",
+                    "title": "Number Precision",
+                    "description": "How many significant digits should be displayed?",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "conditionalFormatting",
+            "title": "Conditional Formatting Rules",
+            "type": "collection",
+            "items": [
+                {
+                    "name": "operator",
+                    "title": "Operator",
+                    "description": "Operator to apply to the value",
+                    "type": "enum",
+                    "items": [
+                        {
+                          "title": ">",
+                          "value": ">"
+                        },
+                        {
+                          "title": ">=",
+                          "value": ">="
+                        },
+                        {
+                          "title": "==",
+                          "value": "=="
+                        },
+                        {
+                          "title": "<=",
+                          "value": "<="
+                        },
+                        {
+                          "title": "<",
+                          "value": "<"
+                        }
+                      ]
+                },
+                {
+                    "name": "valueString",
+                    "title": "Value",
+                    "description": "Target value to use with the operator",
+                    "type": "string"
+                },
+                {
+                    "name": "color",
+                    "title": "Color",
+                    "description": "Color to use",
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}

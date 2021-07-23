@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "timeseries-with-events",
-    "version": "1.0.18",
+    "version": "1.0.23",
     "scripts": {
         "start": "nr1 nerdpack:serve",
         "test": "exit 0"
@@ -10,13 +10,13 @@
         "uuid": "1f98fddc-c5ea-4374-bad6-21d44b9e0ac5"
     },
     "dependencies": {
+        "@newrelic/nr1-community": "latest",
+        "luxon": "latest",
         "prop-types": "^15.6.2",
         "react": "^16.6.3",
         "react-dom": "^16.6.3",
-        "recharts": "^2.0.9",
-        "luxon": "latest",
-        "trendline": "latest",
-        "@newrelic/nr1-community": "latest"
+        "recharts": "^2.0.10",
+        "trendline": "latest"
     },
     "browserslist": [
         "last 2 versions",
